@@ -18,7 +18,7 @@ namespace CsharpProject
         {
             get; set;
         }
-        public int? Year
+        public string? Year
         {
             get; set;
         }

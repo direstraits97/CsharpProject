@@ -16,7 +16,7 @@ namespace CsharpProject
             books = storage.Load();
         }
 
-        public void addBook(string title, string author, string genre, int year)
+        public void addBook(string title, string author, string genre, string year)
         {
             Book book = new Book();
             book.Title = title;
