@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 namespace CsharpProject
 {
 
@@ -48,6 +49,19 @@ namespace CsharpProject
                         foreach(Book book in bookregister.GetBooks())
                         {
                             Console.WriteLine($"[{i++}] {book.Title}\n Författare: {book.Author}\n Genre: {book.Genre}\n År: {book.Year}\n");
+                        }
+                        Console.WriteLine("Tryck på valfri tangent för att gå tillbaka till menyn...");
+                        Console.ReadKey();
+                        break;
+                    case '3':
+                        Console.Clear();
+                        Console.WriteLine("J O S E F I N E ' S  B O K R E G I S T E R\n\n");
+                        Console.WriteLine("Sök efter titel eller författare:");
+                        string searchInput = Console.ReadLine();
+                        List<Book> result = bookregister.GetBooks().Where(book => book.Title.Contains(searchInput, StringComparison.OrdinalIgnoreCase) || book.Author.Contains(searchInput, StringComparison.OrdinalIgnoreCase)).ToList();
+                        foreach(Book book in result)
+                        {
+                            Console.WriteLine($"{book.Title}\n Författare: {book.Author}\n Genre: {book.Genre}\n År: {book.Year}\n");
                         }
                         Console.WriteLine("Tryck på valfri tangent för att gå tillbaka till menyn...");
                         Console.ReadKey();
