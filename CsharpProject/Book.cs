@@ -18,10 +18,15 @@ namespace CsharpProject
         {
             get; set;
         }
-        public string? Year
+        public int? Year
         {
             get; set;
         }
+        public string? Status
+        {
+            get; set;
+        }
+
     }
 }
 
