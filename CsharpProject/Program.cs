@@ -1,5 +1,6 @@
-﻿using System;
-using System.Linq;
+﻿using Microsoft.VisualBasic;
+using System;
+using System.Runtime.InteropServices.Marshalling;
 namespace CsharpProject
 {
 
@@ -26,40 +27,120 @@ namespace CsharpProject
                 Console.WriteLine("X. Avsluta\n");
 
                 int input = (int)Console.ReadKey(true).Key;
-                switch(input)
+                switch (input)
                 {
                     case '1':
                         Console.Clear();
                         Console.WriteLine("\x1b[3J");
                         Console.WriteLine("J O S E F I N E ' S  B O K R E G I S T E R\n\n");
                         Console.WriteLine("Lägg till ny bok\n");
-                        Console.WriteLine("Titel:");
-                        string? title = Console.ReadLine();
-                        Console.WriteLine("Författare:");
-                        string? author = Console.ReadLine();
-                        Console.WriteLine("Genre:");
-                        string? genre = Console.ReadLine();
-                        Console.WriteLine("År:");
-                        string? year = Console.ReadLine();
-                        Console.WriteLine("Status:");
+                        bool error = false;
+                        string? title = null;
+                        string? author = null;
+                        string? genre = null;
+                        string? year = null;
+                        while (String.IsNullOrEmpty(title))
+                        {
+                            if(error)
+                            {
+                                Console.Clear();
+                                Console.WriteLine("\x1b[3J");
+                                Console.WriteLine("J O S E F I N E ' S  B O K R E G I S T E R\n\n");
+                                Console.WriteLine("Ange bokens titel!\n");
+                            }
+                            Console.WriteLine("Titel:");
+                            title = Console.ReadLine();
+                            if(String.IsNullOrEmpty(title))
+                            {
+                                error = true;
+                            }
+                        }
+                        error = false;
+                        while (String.IsNullOrEmpty(author))
+                        {
+                            if(error)
+                            {
+                                Console.Clear();
+                                Console.WriteLine("\x1b[3J");
+                                Console.WriteLine("J O S E F I N E ' S  B O K R E G I S T E R\n\n");
+                                Console.WriteLine("Ange bokens författare!\n");
+                            }
+                            Console.WriteLine("Författare:");
+                            author = Console.ReadLine();
+                            if (String.IsNullOrEmpty(author))
+                            {
+                                error = true;
+                            }
+                        }
+                        error = false;
+                        while (String.IsNullOrEmpty(genre))
+                        {
+                            if(error)
+                            {
+                                Console.Clear();
+                                Console.WriteLine("\x1b[3J");
+                                Console.WriteLine("J O S E F I N E ' S  B O K R E G I S T E R\n\n");
+                                Console.WriteLine("Ange bokens genre!\n");
+                            }
+                            Console.WriteLine("Genre:");
+                            genre = Console.ReadLine();
+                            if (String.IsNullOrEmpty(genre))
+                            {
+                                error = true;
+                            }
+                        }
+                        error = false;
+                        while(String.IsNullOrEmpty(year))
+                        {
+                            if(error)
+                            {
+                                Console.Clear();
+                                Console.WriteLine("\x1b[3J");
+                                Console.WriteLine("J O S E F I N E ' S  B O K R E G I S T E R\n\n");
+                                Console.WriteLine("Ange bokens utgivningsår!\n");
+                            }
+                            Console.WriteLine("År:");
+                            year = Console.ReadLine();
+                            if (String.IsNullOrEmpty(year))
+                            {
+                                error = true;
+                            }
+                        }
+                        
+                        Console.WriteLine("Lässtatus:");
                         Console.WriteLine("1. Oläst");
                         Console.WriteLine("2. Pågående");
                         Console.WriteLine("3. Utläst");
-                        int bookStatusInput = (int)Console.ReadKey(true).Key;
-                        switch(bookStatusInput)
+                        bool run = true;
+                        error = false;
+                        while(run)
                         {
-                            case '1':
-                                string status1 = "Oläst";
-                                bookregister.addBook(title, author, genre, Convert.ToInt32(year), status1);
-                                break;
-                            case '2':
-                                string status2 = "Pågående";
-                                bookregister.addBook(title, author, genre, Convert.ToInt32(year), status2);
-                                break;
-                            case '3':
-                                string status3 = "Utläst";
-                                bookregister.addBook(title, author, genre, Convert.ToInt32(year), status3);
-                                break;
+                            int bookStatusInput = (int)Console.ReadKey(true).Key;
+                            switch (bookStatusInput)
+                            {
+                                case '1':
+                                    string status1 = "Oläst";
+                                    bookregister.addBook(title, author, genre, year, status1);
+                                    run = false;
+                                    break;
+                                case '2':
+                                    string status2 = "Pågående";
+                                    bookregister.addBook(title, author, genre, year, status2);
+                                    run = false;
+                                    break;
+                                case '3':
+                                    string status3 = "Utläst";
+                                    bookregister.addBook(title, author, genre, year, status3);
+                                    run = false;
+                                    break;
+                                default:
+                                    if(!error)
+                                    {
+                                        Console.WriteLine("Du kan endast ange 1,2 eller 3!");
+                                        error = true;
+                                    } 
+                                    break;
+                            }
                         }
                         break;
                     case '2':
@@ -68,26 +149,37 @@ namespace CsharpProject
                         Console.WriteLine("J O S E F I N E ' S  B O K R E G I S T E R\n\n");
                         Console.WriteLine("Mina böcker\n");
                         i = 0;
-                        foreach(Book book in bookregister.GetBooks())
+                        foreach (Book book in bookregister.GetBooks())
                         {
-                            Console.WriteLine($"[{i++}] {book.Title}\n Författare: {book.Author}\n Genre: {book.Genre}\n År: {book.Year}\n Status: {book.Status}\n");
+                            Console.WriteLine($"[{i++}] {book.Title}\n Författare: {book.Author}\n Genre: {book.Genre}\n År: {book.Year}\n Lässtatus: {book.Status}\n");
                         }
-                        Console.WriteLine("Tryck på valfri tangent för att gå tillbaka till menyn...");
+                        Console.WriteLine("Tryck på valfri tangent för att gå tillbaka till menyn.");
                         Console.ReadKey();
                         break;
                     case '3':
                         Console.Clear();
                         Console.WriteLine("\x1b[3J");
                         Console.WriteLine("J O S E F I N E ' S  B O K R E G I S T E R\n\n");
-                        Console.WriteLine("Sök efter titel eller författare:");
-                        string searchInput = Console.ReadLine();
-                        List<Book> result = bookregister.GetBooks().Where(book => book.Title.Contains(searchInput, StringComparison.OrdinalIgnoreCase) || 
-                        book.Author.Contains(searchInput, StringComparison.OrdinalIgnoreCase)).ToList();
-                        foreach(Book book in result)
+                        string? searchInput = null;
+                        error = false;
+                        while(String.IsNullOrEmpty(searchInput))
                         {
-                            Console.WriteLine($"{book.Title}\n Författare: {book.Author}\n Genre: {book.Genre}\n År: {book.Year}\n");
+                            if(error)
+                            {
+                                Console.Clear();
+                                Console.WriteLine("\x1b[3J");
+                                Console.WriteLine("J O S E F I N E ' S  B O K R E G I S T E R\n\n");
+                                Console.WriteLine("Du måste ange minst ett tecken för att söka!");
+                            }
+                            Console.WriteLine("Sök efter titel eller författare:");
+                            searchInput = Console.ReadLine();
+                            if(String.IsNullOrEmpty(searchInput))
+                            {
+                                error = true;
+                            }
                         }
-                        Console.WriteLine("Tryck på valfri tangent för att gå tillbaka till menyn...");
+                        bookregister.filterBook(searchInput);
+                        Console.WriteLine("Tryck på valfri tangent för att gå tillbaka till menyn.");
                         Console.ReadKey();
                         break;
                     case '4':
@@ -98,38 +190,117 @@ namespace CsharpProject
                         i = 0;
                         foreach (Book book in bookregister.GetBooks())
                         {
-                            Console.WriteLine($"[{i++}] {book.Title}\n Författare: {book.Author}\n Genre: {book.Genre}\n År: {book.Year}\n Status: {book.Status}\n");
+                            Console.WriteLine($"[{i++}] {book.Title}\n Författare: {book.Author}\n Genre: {book.Genre}\n År: {book.Year}\n Lässtatus: {book.Status}\n");
                         }
-                        
+
                         Console.WriteLine("Ange index för boken som ska ändras:");
-                        string changeInput = Console.ReadLine();
-                        Console.WriteLine("Titel:");
-                        string newTitle = Console.ReadLine();
-                        Console.WriteLine("Författare:");
-                        string newAuthor = Console.ReadLine();
-                        Console.WriteLine("Genre:");
-                        string newGenre = Console.ReadLine();
-                        Console.WriteLine("År:");
-                        string newYear = Console.ReadLine();
-                        Console.WriteLine("Status:");
+                        string? changeInput = Console.ReadLine();
+                        string? newTitle = null;
+                        string? newAuthor = null;
+                        string? newGenre = null;
+                        string? newYear = null;
+                        error = false;
+                        while (String.IsNullOrEmpty(newTitle))
+                        {
+                            if (error)
+                            {
+                                Console.Clear();
+                                Console.WriteLine("\x1b[3J");
+                                Console.WriteLine("J O S E F I N E ' S  B O K R E G I S T E R\n\n");
+                                Console.WriteLine("Ange bokens titel!\n");
+                            }
+                            Console.WriteLine("Titel:");
+                            newTitle = Console.ReadLine();
+                            if (String.IsNullOrEmpty(newTitle))
+                            {
+                                error = true;
+                            }
+                        }
+                        error = false;
+                        while (String.IsNullOrEmpty(newAuthor))
+                        {
+                            if (error)
+                            {
+                                Console.Clear();
+                                Console.WriteLine("\x1b[3J");
+                                Console.WriteLine("J O S E F I N E ' S  B O K R E G I S T E R\n\n");
+                                Console.WriteLine("Ange bokens författare!\n");
+                            }
+                            Console.WriteLine("Författare:");
+                            newAuthor = Console.ReadLine();
+                            if (String.IsNullOrEmpty(newAuthor))
+                            {
+                                error = true;
+                            }
+                        }
+                        error = false;
+                        while (String.IsNullOrEmpty(newGenre))
+                        {
+                            if (error)
+                            {
+                                Console.Clear();
+                                Console.WriteLine("\x1b[3J");
+                                Console.WriteLine("J O S E F I N E ' S  B O K R E G I S T E R\n\n");
+                                Console.WriteLine("Ange bokens genre!\n");
+                            }
+                            Console.WriteLine("Genre:");
+                            newGenre = Console.ReadLine();
+                            if (String.IsNullOrEmpty(newGenre))
+                            {
+                                error = true;
+                            }
+                        }
+                        error = false;
+                        while (String.IsNullOrEmpty(newYear))
+                        {
+                            if (error)
+                            {
+                                Console.Clear();
+                                Console.WriteLine("\x1b[3J");
+                                Console.WriteLine("J O S E F I N E ' S  B O K R E G I S T E R\n\n");
+                                Console.WriteLine("Ange bokens utgivningsår!\n");
+                            }
+                            Console.WriteLine("År:");
+                            newYear = Console.ReadLine();
+                            if (String.IsNullOrEmpty(newYear))
+                            {
+                                error = true;
+                            }
+                        }
+                        Console.WriteLine("Lässtatus:");
                         Console.WriteLine("1. Oläst");
                         Console.WriteLine("2. Pågående");
                         Console.WriteLine("3. Utläst");
-                        int putBookStatusInput = (int)Console.ReadKey(true).Key;
-                        switch (putBookStatusInput)
+                        run = true;
+                        error = false;
+                        while(run)
                         {
-                            case '1':
-                                string status1 = "Oläst";
-                                bookregister.putBook(Convert.ToInt32(changeInput), newTitle, newAuthor, newGenre, Convert.ToInt32(newYear), status1);
-                                break;
-                            case '2':
-                                string status2 = "Pågående";
-                                bookregister.putBook(Convert.ToInt32(changeInput), newTitle, newAuthor, newGenre, Convert.ToInt32(newYear), status2);
-                                break;
-                            case '3':
-                                string status3 = "Utläst";
-                                bookregister.putBook(Convert.ToInt32(changeInput), newTitle, newAuthor, newGenre, Convert.ToInt32(newYear), status3);
-                                break;
+                            int putBookStatusInput = (int)Console.ReadKey(true).Key;
+                            switch (putBookStatusInput)
+                            {
+                                case '1':
+                                    string status1 = "Oläst";
+                                    bookregister.putBook(Convert.ToInt32(changeInput), newTitle, newAuthor, newGenre, newYear, status1);
+                                    run = false;
+                                    break; 
+                                case '2':
+                                    string status2 = "Pågående";
+                                    bookregister.putBook(Convert.ToInt32(changeInput), newTitle, newAuthor, newGenre, newYear, status2);
+                                    run = false;
+                                    break;
+                                case '3':
+                                    string status3 = "Utläst";
+                                    bookregister.putBook(Convert.ToInt32(changeInput), newTitle, newAuthor, newGenre, newYear, status3);
+                                    run = false;
+                                    break;
+                                default:
+                                    if (!error)
+                                    {
+                                        Console.WriteLine("Du kan endast ange 1,2 eller 3!");
+                                        error = true;
+                                    }
+                                    break;
+                            }
                         }
                         break;
                     case '5':
@@ -141,19 +312,20 @@ namespace CsharpProject
                         i = 0;
                         foreach (Book book in bookregister.GetBooks())
                         {
-                            Console.WriteLine($"[{i++}] {book.Title}\n Författare: {book.Author}\n Genre: {book.Genre}\n År: {book.Year}\n Status: {book.Status}\n");
+                            
+                            Console.WriteLine($"[{i++}] {book.Title}\n Författare: {book.Author}\n Genre: {book.Genre}\n År: {book.Year}\n Lässtatus: {book.Status}\n");
                         }
 
                         Console.WriteLine("Ange index att radera:");
-                        string index = Console.ReadLine();
-                        if(!String.IsNullOrEmpty(index))
+                        string? index = Console.ReadLine();
+                        if (!String.IsNullOrEmpty(index))
                             try
                             {
                                 bookregister.delBook(Convert.ToInt32(index));
                             }
                             catch (Exception)
                             {
-                                Console.WriteLine("Angivet index är ogiltigt!\nTryck på valfri tangent för att fortsätta...");
+                                Console.WriteLine("Angivet index är ogiltigt!\nTryck på valfri tangent för att fortsätta.");
                                 Console.ReadKey();
                             }
                         break;
@@ -166,17 +338,17 @@ namespace CsharpProject
                         i = 0;
                         foreach (Book book in bookregister.GetBooks())
                         {
-                            Console.WriteLine($"[{i++}] {book.Title}\n Författare: {book.Author}\n Genre: {book.Genre}\n År: {book.Year}\n Status: {book.Status}\n");
+                            Console.WriteLine($"[{i++}] {book.Title}\n Författare: {book.Author}\n Genre: {book.Genre}\n År: {book.Year}\n Lässtatus: {book.Status}\n");
                         }
 
                         Console.WriteLine("Ange index för att ändra lässtatus:");
-                        string statusInput = Console.ReadLine();
-                        Console.WriteLine("Status:");
+                        string? statusInput = Console.ReadLine();
+                        Console.WriteLine("Lässtatus:");
                         Console.WriteLine("1. Oläst");
                         Console.WriteLine("2. Pågående");
                         Console.WriteLine("3. Utläst");
                         int changeBookStatusInput = (int)Console.ReadKey(true).Key;
-                        switch(changeBookStatusInput)
+                        switch (changeBookStatusInput)
                         {
                             case '1':
                                 string newStatus1 = "Oläst";
@@ -199,8 +371,15 @@ namespace CsharpProject
 
                 }
             }
+            static void ChangeColorOfWord(ConsoleColor color, string word)
+            {
+                var defaultColor = Console.ForegroundColor;
+                Console.ForegroundColor = color;
+                Console.Write(word);
+                Console.ForegroundColor = defaultColor;
+            
+            }
 
         }
-
     }
 }
