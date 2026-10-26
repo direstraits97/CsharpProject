@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using System;
-using System.Runtime.InteropServices.Marshalling;
+﻿using System;
 namespace CsharpProject
 {
 
@@ -192,9 +190,44 @@ namespace CsharpProject
                         {
                             Console.WriteLine($"[{i++}] {book.Title}\n Författare: {book.Author}\n Genre: {book.Genre}\n År: {book.Year}\n Lässtatus: {book.Status}\n");
                         }
+                        string? changeInput = null;
+                        bool indexLoop = true;
+                        error = false;
+                        while (indexLoop)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("\x1b[3J");
+                            Console.WriteLine("J O S E F I N E ' S  B O K R E G I S T E R\n\n");
+                            i = 0;
+                            foreach (Book book in bookregister.GetBooks())
+                            {
+                                Console.WriteLine($"[{i++}] {book.Title}\n Författare: {book.Author}\n Genre: {book.Genre}\n År: {book.Year}\n Lässtatus: {book.Status}\n");
+                            }
+                            if (error)
+                            {
+                                Console.WriteLine("Du måste ange ett giltigt index från listan!");
 
-                        Console.WriteLine("Ange index för boken som ska ändras:");
-                        string? changeInput = Console.ReadLine();
+                            }
+                            Console.WriteLine("Ange index för boken som ska ändras:\n");
+                                
+                            changeInput = Console.ReadLine();
+                            if (String.IsNullOrEmpty(changeInput))
+                            {
+                                error = true;
+                                continue;
+                            }
+                            else if(!Int32.TryParse(changeInput, out int number))
+                            {
+                                error = true;
+                                continue;
+                            }
+                            else if (Convert.ToInt32(changeInput) < 0 || Convert.ToInt32(changeInput) > (bookregister.GetBooks().Count - 1))
+                            { 
+                                error = true;
+                                continue;
+                            }
+                            indexLoop = false;
+                        }
                         string? newTitle = null;
                         string? newAuthor = null;
                         string? newGenre = null;
@@ -340,28 +373,78 @@ namespace CsharpProject
                         {
                             Console.WriteLine($"[{i++}] {book.Title}\n Författare: {book.Author}\n Genre: {book.Genre}\n År: {book.Year}\n Lässtatus: {book.Status}\n");
                         }
+                        error = false;
+                        indexLoop = true;
+                        string? statusInput = null;
+                        while(indexLoop)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("\x1b[3J");
+                            Console.WriteLine("J O S E F I N E ' S  B O K R E G I S T E R\n\n");
+                            i = 0;
+                            foreach (Book book in bookregister.GetBooks())
+                            {
+                                Console.WriteLine($"[{i++}] {book.Title}\n Författare: {book.Author}\n Genre: {book.Genre}\n År: {book.Year}\n Lässtatus: {book.Status}\n");
+                            }
+                            if (error)
+                            {
+                                Console.WriteLine("Du måste ange ett giltigt index från listan!");
 
-                        Console.WriteLine("Ange index för att ändra lässtatus:");
-                        string? statusInput = Console.ReadLine();
+                            }
+                            Console.WriteLine("Ange index för att ändra lässtatus:\n");
+
+                            statusInput = Console.ReadLine();
+                            if (String.IsNullOrEmpty(statusInput))
+                            {
+                                error = true;
+                                continue;
+                            }
+                            else if (!Int32.TryParse(statusInput, out int number))
+                            {
+                                error = true;
+                                continue;
+                            }
+                            else if (Convert.ToInt32(statusInput) < 0 || Convert.ToInt32(statusInput) > (bookregister.GetBooks().Count - 1))
+                            {
+                                error = true;
+                                continue;
+                            }
+                            indexLoop = false;
+                        }
+                        run = true;
+                        error = false;
                         Console.WriteLine("Lässtatus:");
                         Console.WriteLine("1. Oläst");
                         Console.WriteLine("2. Pågående");
                         Console.WriteLine("3. Utläst");
-                        int changeBookStatusInput = (int)Console.ReadKey(true).Key;
-                        switch (changeBookStatusInput)
+                        while(run)
                         {
-                            case '1':
-                                string newStatus1 = "Oläst";
-                                bookregister.putStatusBook(Convert.ToInt32(statusInput), newStatus1);
-                                break;
-                            case '2':
-                                string newStatus2 = "Pågående";
-                                bookregister.putStatusBook(Convert.ToInt32(statusInput), newStatus2);
-                                break;
-                            case '3':
-                                string newStatus3 = "Utläst";
-                                bookregister.putStatusBook(Convert.ToInt32(statusInput), newStatus3);
-                                break;
+                            int changeBookStatusInput = (int)Console.ReadKey(true).Key;
+                            switch (changeBookStatusInput)
+                            {
+                                case '1':
+                                    string newStatus1 = "Oläst";
+                                    bookregister.putStatusBook(Convert.ToInt32(statusInput), newStatus1);
+                                    run = false;
+                                    break;
+                                case '2':
+                                    string newStatus2 = "Pågående";
+                                    bookregister.putStatusBook(Convert.ToInt32(statusInput), newStatus2);
+                                    run = false;
+                                    break;
+                                case '3':
+                                    string newStatus3 = "Utläst";
+                                    bookregister.putStatusBook(Convert.ToInt32(statusInput), newStatus3);
+                                    run = false;
+                                    break;
+                                default:
+                                    if (!error)
+                                    {
+                                        Console.WriteLine("Du kan endast ange 1,2 eller 3!");
+                                        error = true;
+                                    }
+                                    break;
+                            }
                         }
 
                         break;
@@ -371,15 +454,6 @@ namespace CsharpProject
 
                 }
             }
-            static void ChangeColorOfWord(ConsoleColor color, string word)
-            {
-                var defaultColor = Console.ForegroundColor;
-                Console.ForegroundColor = color;
-                Console.Write(word);
-                Console.ForegroundColor = defaultColor;
-            
-            }
-
         }
     }
 }

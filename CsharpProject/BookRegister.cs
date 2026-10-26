@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace CsharpProject
 {
@@ -8,7 +9,7 @@ namespace CsharpProject
     {
         private readonly IBookRegisterStorage storage;
 
-        private List<Book> books;
+        private List<Book> books = new List<Book>();
 
         public BookRegister(IBookRegisterStorage storage)
         {
@@ -53,14 +54,14 @@ namespace CsharpProject
 
         public void filterBook(string input)
         {
-            List<Book> result = books.Where(book => book.Title.Contains(input, StringComparison.OrdinalIgnoreCase) || 
+                List<Book> result = books.Where(book => book.Title.Contains(input, StringComparison.OrdinalIgnoreCase) ||
             book.Author.Contains(input, StringComparison.OrdinalIgnoreCase)).ToList();
-            foreach (Book book in result)
-            {
+                foreach (Book book in result)
                 {
-                    Console.WriteLine($"{book.Title}\n Författare: {book.Author}\n Genre: {book.Genre}\n År: {book.Year}\n Lässtatus: {book.Status}\n");
-                }
-            }
+                    {
+                        Console.WriteLine($"{book.Title}\n Författare: {book.Author}\n Genre: {book.Genre}\n År: {book.Year}\n Lässtatus: {book.Status}\n");
+                    }
+                } 
         }
 
         public List<Book> GetBooks()

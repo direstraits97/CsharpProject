@@ -6,26 +6,26 @@ namespace CsharpProject
 {
     public class Book
     {
-        public string? Title
+        public string Title
         {
             get; set;
-        }
-        public string? Author
+        } = "";
+        public string Author
         {
             get; set;
-        }
-        public string? Genre
+        } = "";
+        public string Genre
         {
             get; set;
-        }
-        public string? Year
+        } = "";
+        public string Year
         {
             get; set;
-        }
-        public string? Status
+        } = "";
+        public string Status
         {
             get; set;
-        }
+        } = "";
 
     }
 }
