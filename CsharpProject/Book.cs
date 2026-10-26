@@ -1,6 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿/*
+* Filnamn: Book.cs
+* Författare: Josefine Backlund
+* Datum: 2026-10-26
+* Kurs: Programmering i C#.NET
+* 
+* Beskrivning:
+* Klassfil som beskriver innehållet i varje bok.
+*/
 
 namespace CsharpProject
 {
