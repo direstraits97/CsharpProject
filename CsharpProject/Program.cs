@@ -92,19 +92,27 @@ namespace CsharpProject
                             }
                         }
                         error = false;
-                        while (String.IsNullOrEmpty(year))
+                        bool validateNumberInput = true; //För att kontrollera rätt input av nummer.
+                        while (validateNumberInput) //Detta är sant tills loopen slutar köra.
                         {
                             if (error)
                             {
                                 RecurrentTopMenu();
-                                Console.WriteLine("Ange bokens utgivningsår!\n");
+                                Console.WriteLine("Du måste ange ett utgivningsår! Använd siffror.\n"); //Felmeddelande vid saknad input eller fel typ.
                             }
                             Console.WriteLine("År:");
                             year = Console.ReadLine();
-                            if (String.IsNullOrEmpty(year))
-                            {
-                                error = true;
-                            }
+                                if (String.IsNullOrEmpty(year))
+                                {
+                                    error = true;
+                                    continue;
+                                }
+                                else if (!Int32.TryParse(year, out int number)) //Om false blir error sant, alltså om input ej är av typ number. Loop börjar om tills den passerar både if och if else.
+                                {
+                                    error = true;
+                                    continue;
+                                }
+                                validateNumberInput = false; //Loop klar, validering lyckad.
                         }
 
                         Console.WriteLine("Lässtatus:");
@@ -122,17 +130,17 @@ namespace CsharpProject
                             {
                                 case '1':
                                     string status1 = "Oläst";
-                                    bookregister.addBook(title, author, genre, year, status1);
+                                    bookregister.addBook(title, author, genre, Convert.ToInt32(year), status1);
                                     run = false;
                                     break;
                                 case '2':
                                     string status2 = "Pågående";
-                                    bookregister.addBook(title, author, genre, year, status2);
+                                    bookregister.addBook(title, author, genre, Convert.ToInt32(year), status2);
                                     run = false;
                                     break;
                                 case '3':
                                     string status3 = "Utläst";
-                                    bookregister.addBook(title, author, genre, year, status3);
+                                    bookregister.addBook(title, author, genre, Convert.ToInt32(year), status3);
                                     run = false;
                                     break;
                                 default: //Om fel tangent försöker anges.
@@ -183,9 +191,9 @@ namespace CsharpProject
                         LoopBooks(bookregister, i);
 
                         string? changeInput = null;
-                        bool indexLoop = true; //bool för inputkontroll av index.
                         error = false;
-                        while (indexLoop)
+                        validateNumberInput = true;
+                        while (validateNumberInput)
                         {
                             RecurrentTopMenu();
 
@@ -214,7 +222,7 @@ namespace CsharpProject
                                 error = true;
                                 continue;
                             }
-                            indexLoop = false; //Om ingen if eller else if triggats under en loop slutar den köras då indexLoop blir false.
+                            validateNumberInput = false; //Om ingen if eller else if triggats under en loop slutar den köras då indexLoop blir false.
                         }
                         string? changeTitle = null;
                         string? changeAuthor = null;
@@ -266,19 +274,27 @@ namespace CsharpProject
                             }
                         }
                         error = false;
-                        while (String.IsNullOrEmpty(changeYear))
+                        validateNumberInput = true;
+                        while (validateNumberInput)
                         {
                             if (error)
                             {
                                 RecurrentTopMenu();
-                                Console.WriteLine("Ange bokens utgivningsår!\n");
+                                Console.WriteLine("Ange bokens utgivningsår! Använd siffror.\n");
                             }
                             Console.WriteLine("År:");
                             changeYear = Console.ReadLine();
                             if (String.IsNullOrEmpty(changeYear))
                             {
                                 error = true;
+                                continue;
                             }
+                            else if (!Int32.TryParse(changeYear, out int number))
+                            {
+                                error = true;
+                                continue;
+                            }
+                            validateNumberInput = false;
                         }
                         Console.WriteLine("Lässtatus:");
                         Console.WriteLine("1. Oläst");
@@ -293,17 +309,17 @@ namespace CsharpProject
                             {
                                 case '1':
                                     string status1 = "Oläst";
-                                    bookregister.putBook(Convert.ToInt32(changeInput), changeTitle, changeAuthor, changeGenre, changeYear, status1);
+                                    bookregister.putBook(Convert.ToInt32(changeInput), changeTitle, changeAuthor, changeGenre, Convert.ToInt32(changeYear), status1);
                                     run = false;
                                     break;
                                 case '2':
                                     string status2 = "Pågående";
-                                    bookregister.putBook(Convert.ToInt32(changeInput), changeTitle, changeAuthor, changeGenre, changeYear, status2);
+                                    bookregister.putBook(Convert.ToInt32(changeInput), changeTitle, changeAuthor, changeGenre, Convert.ToInt32(changeYear), status2);
                                     run = false;
                                     break;
                                 case '3':
                                     string status3 = "Utläst";
-                                    bookregister.putBook(Convert.ToInt32(changeInput), changeTitle, changeAuthor, changeGenre, changeYear, status3);
+                                    bookregister.putBook(Convert.ToInt32(changeInput), changeTitle, changeAuthor, changeGenre, Convert.ToInt32(changeYear), status3);
                                     run = false;
                                     break;
                                 default:
@@ -342,9 +358,9 @@ namespace CsharpProject
                         LoopBooks(bookregister, i);
 
                         error = false;
-                        indexLoop = true;
+                        validateNumberInput = true;
                         string? statusInput = null;
-                        while (indexLoop) //Samma felhantering som tidigare.
+                        while (validateNumberInput) //Samma felhantering som tidigare.
                         {
                             RecurrentTopMenu();
                             LoopBooks(bookregister, i);
@@ -371,7 +387,7 @@ namespace CsharpProject
                                 error = true;
                                 continue;
                             }
-                            indexLoop = false;
+                            validateNumberInput = false;
                         }
                         run = true;
                         error = false;

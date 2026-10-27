@@ -22,7 +22,7 @@ namespace CsharpProject
             books = storage.Load(); //Hämtar filer från angedd sökväg.
         }
 
-        public void addBook(string title, string author, string genre, string year, string status) //Lägger till ny bok med titel, författare, genre, år och lässtatus.
+        public void addBook(string title, string author, string genre, int year, string status) //Lägger till ny bok med titel, författare, genre, år och lässtatus.
         {
             Book book = new Book(); //Ny instans av book enligt Book.cs.
             book.Title = title;
@@ -35,7 +35,7 @@ namespace CsharpProject
             storage.Save(books); //Sparar och uppdaterar.
         }
 
-        public void putBook(int index, string title, string author, string genre, string year, string status)
+        public void putBook(int index, string title, string author, string genre, int year, string status)
         {
             books[index].Title = title;
             books[index].Author = author;
