@@ -7,3 +7,6 @@ Funktionerna som erbjuds består av följande:
 - Ändra böcker
 - Ta bort böcker
 - Ändra lässtatus på böcker (oläst, pågående eller utläst)
+
+## Länk till videodemo
+https://youtu.be/r5R9C-6H75Q
